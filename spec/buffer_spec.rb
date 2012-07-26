@@ -33,7 +33,7 @@ describe Buffer::Client do
       subject.respond_to?(:api).should be_true
     end
 
-    describe ':get' do
+    describe 'api :get' do
 
       before do
         stub_get('user.json').
@@ -53,6 +53,14 @@ describe Buffer::Client do
         a_get('user.json').
           with(:query => {:access_token => 'some_token'}).
           should have_been_made
+      end
+
+      it 'returns correct parsed object from user.json' do
+        res = subject.api :get, 'user'
+        target = begin
+          MultiJson.load fixture('user.json')
+        end
+        res.should eq(target)
       end
 
     end

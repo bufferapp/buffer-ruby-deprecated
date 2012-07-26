@@ -1,5 +1,6 @@
 require "buffer/version"
 require 'faraday'
+require 'multi_json'
 
 module Buffer
   class Client
@@ -27,7 +28,8 @@ module Buffer
     # url - enpoint uri, with or without .json
     def api(type, uri)
       uri += '.json' unless uri =~ /\.json$/
-      @conn.get uri, :access_token => @token
+      res = @conn.get uri, :access_token => @token
+      MultiJson.load res.body
     end
 
   end

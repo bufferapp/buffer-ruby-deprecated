@@ -4,6 +4,7 @@ SimpleCov.start do
 end
 require 'rspec'
 require 'webmock/rspec'
+require 'multi_json'
 require 'buffer'
 
 # Taken from https://github.com/sferik/twitter/blob/master/spec/helper.rb
