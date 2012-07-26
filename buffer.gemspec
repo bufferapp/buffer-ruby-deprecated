@@ -4,8 +4,8 @@ require File.expand_path('../lib/buffer/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Tom Ashworth"]
   gem.email         = ["tom@phuu.net"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = "Buffer API wrapper for Ruby"
+  gem.summary       = "Buffer API wrapper for Ruby"
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "buffer"
   gem.require_paths = ["lib"]
   gem.version       = Buffer::VERSION
+
+  gem.add_development_dependency "rspec", "~> 2.7"
 end
