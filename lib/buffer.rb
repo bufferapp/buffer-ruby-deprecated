@@ -9,14 +9,14 @@ module Buffer
 
     # Initialize a new Buffer::Client
     #
-    # Also sets up a Faray connection object
+    # Also sets up a Faraday connection object
     #
     # token - string access token for use with all API requests
     def initialize(token)
-      if token.kind_of?(String)
+      if token.kind_of? String
         @token = token
       else
-        raise ArgumentError
+        raise ArgumentError, "token must be a string"
       end
 
       @conn = Faraday.new :url => 'https://api.bufferapp.com/1/'
@@ -29,7 +29,11 @@ module Buffer
     def api(type, uri)
       uri += '.json' unless uri =~ /\.json$/
       res = @conn.get uri, :access_token => @token
-      MultiJson.load res.body
+      if res.body && res.body.length >= 2
+        MultiJson.load res.body
+      else
+        nil
+      end
     end
 
   end

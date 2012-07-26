@@ -38,7 +38,10 @@ describe Buffer::Client do
       before do
         stub_get('user.json').
           with(:query => {:access_token => 'some_token'}).
-          to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'} )
+          to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('non_existent.json').
+          with(:query => {:access_token => 'some_token'}).
+          to_return(:body => '', :headers => {:content_type => 'application/json; charset=utf-8'})
       end
 
       it 'makes correct request to user.json with access token' do
@@ -55,11 +58,17 @@ describe Buffer::Client do
           should have_been_made
       end
 
-      it 'returns correct parsed object from user.json' do
+      it 'returns correct parsed object from user' do
         res = subject.api :get, 'user'
         target = begin
           MultiJson.load fixture('user.json')
         end
+        res.should eq(target)
+      end
+
+      it 'returns nill from non_existent' do
+        res = subject.api :get, 'non_existent'
+        target = nil
         res.should eq(target)
       end
 
