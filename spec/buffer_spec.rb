@@ -41,8 +41,15 @@ describe Buffer::Client do
           to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'} )
       end
 
-      it 'gets user.json correctly' do
+      it 'makes correct request to user.json with access token' do
         subject.api :get, 'user.json'
+        a_get('user.json').
+          with(:query => {:access_token => 'some_token'}).
+          should have_been_made
+      end
+
+      it 'makes correct request to user.json when passed user' do
+        subject.api :get, 'user'
         a_get('user.json').
           with(:query => {:access_token => 'some_token'}).
           should have_been_made
