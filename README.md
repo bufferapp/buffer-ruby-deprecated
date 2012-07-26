@@ -52,14 +52,14 @@ buffer.api :get, 'user'
 
 ```ruby
 user_data = buffer.get 'user'
-user_profiles = buffer.get 'profiles', :limit => 3
+user_profiles = buffer.get 'profiles'
 ```
 
 `get` is just a thin layer over `api`, so the above is equivalent to:
 
 ```ruby
 user_data = buffer.api :get, 'user'
-user_profiles = buffer.get :get, 'profiles', :limit => 3
+user_profiles = buffer.api :get, 'profiles'
 ```
 
 #### `post`
