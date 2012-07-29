@@ -4,8 +4,6 @@ Official API wrapper for [Buffer](http://bufferapp.com) covering user & profile 
 
 For a Buffer OmniAuth strategy for authenticating your users with Buffer, see [omniauth-buffer2](/bufferapp/omniauth-buffer2).
 
-Please note: **This gem is not ready for use**. Please contribute!
-
 ## Installation
 
 Add this line to your application's Gemfile:

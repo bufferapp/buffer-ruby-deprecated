@@ -27,8 +27,9 @@ module Buffer
 
     # api is the root method of the Client, handling all requests.
     #
-    # type - :get or :post
+    # type - HTTP verb, :get or :post
     # url - enpoint uri, with or without .json
+    # data - hash or array of data to be sent in POST body
     def api(type, uri, data = {})
       uri << '.json' unless uri =~ /\.json$/
       res = if type == :get
