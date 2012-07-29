@@ -146,4 +146,70 @@ describe Buffer::Client do
 
   end
 
+  describe 'get' do
+
+    subject do
+      Buffer::Client.new 'some_token'
+    end
+
+    it 'is a method' do
+      subject.respond_to?(:get).should be_true
+    end
+
+    before do
+      stub_get('user.json').
+        with(:query => {:access_token => 'some_token'}).
+        to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'})
+    end
+
+    it 'makes correct request to user.json with access token' do
+      subject.get 'user.json'
+      a_get('user.json').
+        with(:query => {:access_token => 'some_token'}).
+        should have_been_made
+    end
+
+    it 'makes correct request when passed user' do
+      subject.get 'user'
+      a_get('user.json').
+        with(:query => {:access_token => 'some_token'}).
+        should have_been_made
+    end
+
+  end
+
+  describe 'post' do
+
+    subject do
+      Buffer::Client.new 'some_token'
+    end
+
+    it 'is a method' do
+      subject.respond_to?(:post).should be_true
+    end
+
+    before do
+      stub_post('updates/create.json').
+        with(
+          :query => {:access_token => 'some_token'},
+          :body => {"media"=>{"link"=>"http://google.com"}, "profile_ids"=>["4eb854340acb04e870000010", "4eb9276e0acb04bb81000067"], "text"=>"This is an example update"}).
+        to_return(
+          :body => fixture('success.json'),
+          :status => 200)
+    end
+
+    it 'should make the correct POST to updates/create.json' do
+      subject.post 'updates/create.json',
+                   :text => "This is an example update",
+                   :profile_ids => ['4eb854340acb04e870000010', '4eb9276e0acb04bb81000067'],
+                   :media => {:link => "http://google.com"}
+      a_post('updates/create.json').
+        with(
+          :query => {:access_token => 'some_token'},
+          :body => "text=This+is+an+example+update&profile_ids[]=4eb854340acb04e870000010&profile_ids[]=4eb9276e0acb04bb81000067&media[link]=http%3A%2F%2Fgoogle.com").
+        should have_been_made
+    end
+
+  end
+
 end

@@ -25,6 +25,16 @@ module Buffer
       @addr = Addressable::URI.new
     end
 
+    # get is a shorthand method for api :get
+    def get(uri)
+      api :get, uri
+    end
+
+    # get is a shorthand method for api :get
+    def post(uri, data = {})
+      api :post, uri, data
+    end
+
     # api is the root method of the Client, handling all requests.
     #
     # type - HTTP verb, :get or :post
