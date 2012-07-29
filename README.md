@@ -24,10 +24,24 @@ Or install it yourself as:
 
 The most basic usage of the wrapper involves creating a `Buffer::Client` and then making requests through that object. Since all requests to the Buffer API require an access token you must have first authorized a Buffer user, or otherwise have an access token. The [Buffer OmniAuth Strategy](http://github.com/bufferapp/omniauth-buffer2) can help with this.
 
+Use the Client if you just want to have full control over your `get` and `post` requests.
+
 Creating a new client is simple:
 
 ```ruby
 buffer = Buffer::Client.new access_token
+```
+
+### User
+
+The User object makes working with users easier by providing some useful shortcuts to user information, like `id`, and data, like `profiles`. It provides the all the methods specified in the Client as it inherits from it.
+
+The User introduces some caching of requests. These are invalidated when a `post` request is made to an endpoint that might affect the data. You can force cache invalidation of one or all endpoints using the `invalidate` method, explained below.
+
+Creating a new user:
+
+```ruby
+user = Buffer::User.new access_token
 ```
 
 ### API
@@ -71,3 +85,26 @@ user_data = buffer.post 'updates/create', :text => "Hello, world!", :profile_ids
 ```ruby
 user_data = buffer.api :post, 'updates/create', :text => "Hello, world!", :profile_ids => ['123abc456', '789def123']
 ```
+
+### User API
+
+#### `profiles`
+
+`profiles` is a helper method that gives you access to the profiles associated with a particular user. It's shorthand for `get 'profiles'` with caching. The
+
+`profiles` is invalidated by any `post` request made to a child of the `profiles` endpoing, like `/profiles/:id/schedules/update`.
+
+```ruby
+user.profiles                 # all a user's profiles
+user.profiles '123abc456def'  # return a profile with a specific id
+```
+
+#### `id`, `created_at`...
+
+The User object will allow access to the data from the user endpoint in manner of a normal ruby accessor. This makes accessing user info very easy, like the following:
+
+```ruby
+user.id
+user.created_at
+```
+
