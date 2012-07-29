@@ -26,11 +26,16 @@ module Buffer
     end
 
     # get is a shorthand method for api :get
+    #
+    # uri - string endpoint uri
     def get(uri)
       api :get, uri
     end
 
-    # get is a shorthand method for api :get
+    # post is a shorthand method for api :post
+    # 
+    # uri - string endpoint uri
+    # data - hash or array for POST body
     def post(uri, data = {})
       api :post, uri, data
     end
