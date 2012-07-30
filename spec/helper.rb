@@ -37,3 +37,7 @@ end
 def fixture(file)
   File.new(fixture_path + '/' + file)
 end
+
+def fixture_contents(file)
+  File.open(fixture_path + '/' + file) { |f| f.read }
+end

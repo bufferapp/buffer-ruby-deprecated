@@ -23,6 +23,7 @@ module Buffer
 
       @conn = Faraday.new :url => 'https://api.bufferapp.com/1/'
       @addr = Addressable::URI.new
+      @cache = {}
     end
 
     # get is a shorthand method for api :get
@@ -63,6 +64,22 @@ module Buffer
       rescue
       end
     end
+
+  end
+
+  class User < Client
+
+    private
+
+      def user
+        @cache[:user] ||= get 'user'
+      end
+
+    public
+
+      def method_missing(method, *args, &block)
+        user[method.to_s] || super
+      end
 
   end
 end

@@ -36,7 +36,7 @@ buffer = Buffer::Client.new access_token
 
 The User object makes working with users easier by providing some useful shortcuts to user information, like `id`, and data, like `profiles`. It provides the all the methods specified in the Client as it inherits from it.
 
-The User introduces some caching of requests. These are invalidated when a `post` request is made to an endpoint that might affect the data. You can force cache invalidation of one or all endpoints using the `invalidate` method, explained below.
+The User introduces some caching of requests. These are invalidated when a `post` request is made to an endpoint that might affect the data. You can force cache invalidation of one or all endpoints using the `invalidate` method.
 
 Creating a new user:
 
@@ -107,4 +107,3 @@ The User object will allow access to the data from the user endpoint in manner o
 user.id
 user.created_at
 ```
-

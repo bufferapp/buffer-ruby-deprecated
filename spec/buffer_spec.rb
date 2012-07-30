@@ -38,13 +38,21 @@ describe Buffer::Client do
       before do
         stub_get('user.json').
           with(:query => {:access_token => 'some_token'}).
-          to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'})
+          to_return(
+            :body => fixture('user.json'),
+            :headers => {:content_type => 'application/json; charset=utf-8'})
+
         stub_get('non_existent.json').
           with(:query => {:access_token => 'some_token'}).
-          to_return(:body => '', :headers => {:content_type => 'application/json; charset=utf-8'})
+          to_return(
+            :body => '',
+            :headers => {:content_type => 'application/json; charset=utf-8'})
+
         stub_get('mangled.json').
           with(:query => {:access_token => 'some_token'}).
-          to_return(:body => '{dfpl:[}233]', :headers => {:content_type => 'application/json; charset=utf-8'})
+          to_return(
+            :body => '{dfpl:[}233]',
+            :headers => {:content_type => 'application/json; charset=utf-8'})
       end
 
       it 'makes correct request to user.json with access token' do
@@ -87,19 +95,36 @@ describe Buffer::Client do
         stub_post('updates/create.json').
           with(
             :query => {:access_token => 'some_token'},
-            :body => {"media"=>{"link"=>"http://google.com"}, "profile_ids"=>["4eb854340acb04e870000010", "4eb9276e0acb04bb81000067"], "text"=>"This is an example update"}).
+            :body => {
+              "media"=>{"link"=>"http://google.com"},
+              "profile_ids"=>[
+                "4eb854340acb04e870000010",
+                "4eb9276e0acb04bb81000067"],
+              "text"=>"This is an example update"}).
           to_return(
             :body => fixture('success.json'),
             :status => 200)
+
         stub_post('updates/creatify.json').
           with(
             :query => {:access_token => 'some_token'},
-            :body => {"media"=>{"link"=>"http://google.com"}, "profile_ids"=>["4eb854340acb04e870000010", "4eb9276e0acb04bb81000067"], "text"=>"This is an example update"}).
+            :body => {
+              "media"=>{"link"=>"http://google.com"},
+              "profile_ids"=>[
+                "4eb854340acb04e870000010",
+                "4eb9276e0acb04bb81000067"], 
+              "text"=>"This is an example update"}).
           to_return(
             :status => 200)
-        stub_request(:post, "https://api.bufferapp.com/1/updates/create.json?access_token=some_token").
+
+        stub_request(
+          :post,
+          "https://api.bufferapp.com/1/updates/create.json?access_token=some_token").
           with(:body => {"profile_ids"=>["fdf", "1"], "text"=>["a237623", "asb"]},
-              :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
+              :headers => {
+                'Accept'=>'*/*',
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'User-Agent'=>'Ruby'}).
           to_return(:status => 200, :body => "", :headers => {})
       end
 
@@ -107,12 +132,14 @@ describe Buffer::Client do
         subject.api :post,
                     'updates/create.json',
                     :text => "This is an example update",
-                    :profile_ids => ['4eb854340acb04e870000010', '4eb9276e0acb04bb81000067'],
+                    :profile_ids => [
+                      '4eb854340acb04e870000010',
+                      '4eb9276e0acb04bb81000067'],
                     :media => {:link => "http://google.com"}
         a_post('updates/create.json').
           with(
             :query => {:access_token => 'some_token'},
-            :body => "text=This+is+an+example+update&profile_ids[]=4eb854340acb04e870000010&profile_ids[]=4eb9276e0acb04bb81000067&media[link]=http%3A%2F%2Fgoogle.com").
+            :body => fixture_contents('create_body.txt')).
           should have_been_made
       end
 
@@ -120,7 +147,9 @@ describe Buffer::Client do
         res = subject.api :post,
                           'updates/create.json',
                           :text => "This is an example update",
-                          :profile_ids => ['4eb854340acb04e870000010', '4eb9276e0acb04bb81000067'],
+                          :profile_ids => [
+                            '4eb854340acb04e870000010',
+                            '4eb9276e0acb04bb81000067'],
                           :media => {:link => "http://google.com"}
         res['success'].should be_true
       end
@@ -129,7 +158,9 @@ describe Buffer::Client do
         res = subject.api :post,
                           'updates/creatify.json',
                           :text => "This is an example update",
-                          :profile_ids => ['4eb854340acb04e870000010', '4eb9276e0acb04bb81000067'],
+                          :profile_ids => [
+                            '4eb854340acb04e870000010',
+                            '4eb9276e0acb04bb81000067'],
                           :media => {:link => "http://google.com"}
         res.should eq(nil)
       end
@@ -159,7 +190,9 @@ describe Buffer::Client do
     before do
       stub_get('user.json').
         with(:query => {:access_token => 'some_token'}).
-        to_return(:body => fixture('user.json'),:headers => {:content_type => 'application/json; charset=utf-8'})
+        to_return(
+          :body => fixture('user.json'),
+          :headers => {:content_type => 'application/json; charset=utf-8'})
     end
 
     it 'makes correct request to user.json with access token' do
@@ -192,7 +225,12 @@ describe Buffer::Client do
       stub_post('updates/create.json').
         with(
           :query => {:access_token => 'some_token'},
-          :body => {"media"=>{"link"=>"http://google.com"}, "profile_ids"=>["4eb854340acb04e870000010", "4eb9276e0acb04bb81000067"], "text"=>"This is an example update"}).
+          :body => {
+            "media"=>{"link"=>"http://google.com"},
+            "profile_ids"=>[
+              "4eb854340acb04e870000010",
+              "4eb9276e0acb04bb81000067"],
+            "text"=>"This is an example update"}).
         to_return(
           :body => fixture('success.json'),
           :status => 200)
@@ -206,10 +244,65 @@ describe Buffer::Client do
       a_post('updates/create.json').
         with(
           :query => {:access_token => 'some_token'},
-          :body => "text=This+is+an+example+update&profile_ids[]=4eb854340acb04e870000010&profile_ids[]=4eb9276e0acb04bb81000067&media[link]=http%3A%2F%2Fgoogle.com").
+          :body => fixture_contents('create_body.txt')).
         should have_been_made
     end
 
   end
 
 end
+
+describe Buffer::User do
+
+  describe 'new' do
+
+    it 'accepts a token' do
+      user = Buffer::User.new 'some_token'
+      user.token.should eq('some_token')
+    end
+
+    it 'rejects an integer token' do
+      lambda { user = Buffer::User.new 123 }.should raise_error
+    end
+
+    it 'rejects an array token' do
+      lambda { user = Buffer::User.new [123, 'hello'] }.should raise_error
+    end
+
+    it 'rejects an hash token' do
+      lambda { user = Buffer::User.new :test => 123 }.should raise_error
+    end
+
+  end
+
+  describe 'helpers' do
+
+    subject do
+      Buffer::User.new 'some_token'
+    end
+
+    before do
+      stub_get('user.json').
+        with(:query => {:access_token => 'some_token'}).
+        to_return(
+          :body => fixture('user.json'),
+          :headers => {:content_type => 'application/json; charset=utf-8'})
+    end
+
+    it 'should respond with correct id' do
+      subject.id.should eq('1234')
+    end
+
+    it 'should not respond to eye_color' do
+      lambda { color = subject.eye_color }.should raise_error
+    end
+
+    it 'should respond to get' do
+      lambda { user = subject.get 'user' }.should_not raise_error
+    end
+
+  end
+
+end
+
+
