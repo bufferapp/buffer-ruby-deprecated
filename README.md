@@ -90,7 +90,16 @@ user_data = buffer.api :post, 'updates/create', :text => "Hello, world!", :profi
 
 ### User API
 
-#### `profiles`
+#### `id`, `created_at`...
+
+The User object allows access to the data from the user endpoint in manner of a normal ruby accessor. This makes accessing user info very easy, like the following:
+
+```ruby
+user.id
+user.created_at
+```
+
+#### `profiles` **not implemented**
 
 `profiles` is a helper method that gives you access to the profiles associated with a particular user. It's shorthand for `get 'profiles'` with caching. The
 
@@ -101,16 +110,8 @@ user.profiles                 # all a user's profiles
 user.profiles '123abc456def'  # return a profile with a specific id
 ```
 
-#### `id`, `created_at`...
-
-The User object will allow access to the data from the user endpoint in manner of a normal ruby accessor. This makes accessing user info very easy, like the following:
-
-```ruby
-user.id
-user.created_at
-```
-
 ## Todo
 
+* `user.profiles`
 * Automatic cache invalidation after post request
 * Move cache handling to a mixin
