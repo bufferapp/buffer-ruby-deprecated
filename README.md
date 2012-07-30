@@ -48,21 +48,21 @@ user = Buffer::User.new access_token
 
 ### API
 
-You can use a client, or any subclass, to make GET & POST requests to the Buffer API. The exposed most low-level API methods are `get`, `post` and, the lowest level, `api`. 
+You can use a client, or any subclass, to make GET & POST requests to the Buffer API. The exposed API methods are `get`, `post` and, the lowest level, `api`. 
 
-#### `api`
+#### api
 
 `api` is the method at the root of the API, handling all requests.
 
 ```ruby
-api (symbol) method, (string) url, (hash, options) params, (hash or array, optional) data
+api (symbol) method, (string) url, (hash, optional) params, (hash or array, optional) data
 # for example:
 buffer.api :get, 'user'
 ```
 
 `method` must be either `:get` or `:post`
 
-#### `get`
+#### get
 
 ```ruby
 user_data = buffer.get 'user'
