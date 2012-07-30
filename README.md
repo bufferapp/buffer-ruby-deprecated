@@ -38,6 +38,8 @@ The User object makes working with users easier by providing some useful shortcu
 
 The User introduces some caching of requests. These are invalidated when a `post` request is made to an endpoint that might affect the data. You can force cache invalidation of one or all endpoints using the `invalidate` method.
 
+**Note: Currently only `invalidate` is implemented. If you make a POST request that changes a user object you must manually invalidate the cache**.
+
 Creating a new user:
 
 ```ruby
@@ -107,3 +109,8 @@ The User object will allow access to the data from the user endpoint in manner o
 user.id
 user.created_at
 ```
+
+## Todo
+
+* Automatic cache invalidation after post request
+* Move cache handling to a mixin
