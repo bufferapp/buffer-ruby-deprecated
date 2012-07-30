@@ -46,7 +46,7 @@ Creating a new user:
 user = Buffer::User.new access_token
 ```
 
-### API
+## API
 
 You can use a client, or any subclass, to make GET & POST requests to the Buffer API. The exposed API methods are `get`, `post` and, the lowest level, `api`. 
 
@@ -88,7 +88,7 @@ user_data = buffer.post 'updates/create', :text => "Hello, world!", :profile_ids
 user_data = buffer.api :post, 'updates/create', :text => "Hello, world!", :profile_ids => ['123abc456', '789def123']
 ```
 
-### User API
+## User API
 
 #### `id`, `created_at`...
 
